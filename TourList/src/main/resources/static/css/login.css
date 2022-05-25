@@ -1,0 +1,42 @@
+.container {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    height: 90vh; }
+
+.formLogin{
+    display: flex; flex-direction: column;
+    align-items:center; font-size: var(--font-medium);
+
+}
+.formLogin-logo {
+    display: flex; flex-direction: row;
+    align-items: center; font-size: 40px;}
+.formLogin-logo i {
+    color: gold;
+    padding: 15px 5px 15px 0;
+}
+.formLogin-logo a{
+    padding: 15px 0 15px 5px;
+}
+.formLogin-Login {
+    display: flex; flex-direction: column;
+}
+.formLogin-Login input{
+    padding: 10px 0;
+}
+.formLogin-Login #userid{
+   margin: 5px 0;
+}
+.formLogin-Login #password{
+    margin: 5px 0;
+}
+
+.formLogin-btnDATA {
+    width: 100%;
+}
+.formLogin-btnDATA button{
+    width: 100%; border-radius: 4px;
+    color: #f0f4f5;
+    border-color: var(--background-color);
+    background-color: var(--background-color);
+}

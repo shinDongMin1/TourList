@@ -1,0 +1,48 @@
+.container {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    height: 90vh; }
+
+.formJoin{
+    display: flex; flex-direction: column;
+    align-items:center; font-size: var(--font-medium);
+}
+.formJoin-logo {
+    display: flex; flex-direction: row;
+    align-items: center; font-size: 40px;}
+.formJoin-logo i {
+    color: gold;
+    padding: 15px 5px 15px 0;
+}
+.formJoin-logo a{
+    padding: 15px 0 15px 5px;
+}
+
+.formJoin-Join {
+    display: flex; flex-direction: column;
+}
+.formJoin-Join input{
+    padding: 10px 0;
+}
+.formJoin-Join #userid{
+    margin: 5px 0;
+}
+.formJoin-Join #password{
+    margin: 5px 0;
+}
+.formJoin-Join #name{
+    margin: 5px 0;
+}
+.formJoin-Join #email{
+    margin: 5px 0;
+}
+
+.formJoin-btnDATA {
+    width: 100%;
+}
+.formJoin-btnDATA button{
+    width: 100%; border-radius: 4px;
+    color: #f0f4f5;
+    border-color: var(--background-color);
+    background-color: var(--background-color);
+}
