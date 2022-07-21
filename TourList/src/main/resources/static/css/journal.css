@@ -1,0 +1,44 @@
+.container { justify-content: center; min-width: 828px; }
+
+.journal { width: 768px; padding: 40px 30px;}
+
+.journal
+{
+    display: flex;
+}
+.journal .pager
+{
+    display: flex;
+    justify-content: center;
+}
+.journal .pager ul
+{
+    display: flex;
+}
+
+.aside
+{
+    height: inherit;
+    width: 192px;
+    margin: 0 10px 0 0;
+}
+.aside ul li
+{
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    margin: 4px;
+}
+.aside ul li:hover
+{
+    background-color: #e3e3e3;
+    border-radius: 4px;
+    height: inherit;
+}
+
+.journal-main
+{
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    height: inherit;
+    width: 568px;
+}

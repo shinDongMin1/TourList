@@ -17,7 +17,7 @@ public class BoardServiceImpl implements BoardService {
     // 페이징 처리된 게시글 리스트 반환
     public Page<Board> findBoardList(Pageable pageable) {
         pageable = PageRequest.of(pageable.getPageNumber () <= 0 ? 0 : pageable.getPageNumber ()-1, pageable.getPageSize ());
-        return boardRepository.findAll (pageable);
+        return boardRepository.findAllByOrderByModifiedDateDesc (pageable);
     }
 
     // 게시글 ID로 조회

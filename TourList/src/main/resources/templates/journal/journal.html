@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:padding="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TourList 홈페이지</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/journal.css}" />
+
+    <!-- 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
+
+    <!-- 아이콘 -->
+    <script src="https://kit.fontawesome.com/ac79bf9ffb.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function Date()
+        {
+            let date = document.getElementById('date').value;
+
+            if("" == date){
+                alert("날짜를 입력하세요");
+                document.getElementById('date').focus();
+                return;
+            }
+            document.formStatistics.action= "date"
+            document.formStatistics.submit();
+        }
+    </script>
+</head>
+<body>
+    <div th:replace="layout/header::header"></div>
+
+    <div class="container" >
+        <div class="content-box">
+            <div class="journal">
+                <div class="aside" style="position: sticky; top: 20px; height: 100%;">
+                    <h2>종류</h2>
+                    <ul>
+                        <a href="/tourlist"><li>나만의 일지</li></a>
+                        <a href="/tourlist"><li>모두의 일지</li></a>
+                    </ul>
+                </div>
+
+                <div class="journal-main">
+                    <h2>main</h2>
+                    <div style="display: flex; flex-wrap: wrap;">
+                        <div th:each="pho : ${photo}" style="padding: 5px;">
+                            <div class="photo" style="border: 1px solid black; display: flex; flex-direction: column; width: 210px; box-shadow: 1px 1px 1px black;" >
+                                <img style="width: 200px; height: 150px; padding: 5px;" th:src="@{/image/Noimg.png}" alt="이미지 없음">
+                                <div class="photo_info" style="width: 200px; padding: 5px;">
+                                    <input type="text" style="border: none; width: 200px;" value="title" />
+                                    <input type="text" style="border: none; width: 200px;" value="2022.07.20" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="pagination">
+                        <h3>페이저</h3>
+                        <div class="pager">
+                            <div>이전</div>
+                            <ul>
+                                <li>1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                            </ul>
+                            <div>다음</div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layout/footer::footer"></div>
+</body>
+</html>

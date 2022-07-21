@@ -22,9 +22,6 @@ public class Board extends BaseTimeEntity {
     private String title;
 
     @Column
-    private String subTitle;
-
-    @Column
     private String content;
 
     @Column
@@ -34,10 +31,9 @@ public class Board extends BaseTimeEntity {
     private Member user;
 
     @Builder
-    public Board(Long id, String title, String subTitle, String content, BoardType boardType, Member user){
+    public Board(Long id, String title, String content, BoardType boardType, Member user){
         this.id = id;
         this.title = title;
-        this.subTitle = subTitle;
         this.content = content;
         this.boardType = boardType;
         this.user = user;
@@ -45,7 +41,6 @@ public class Board extends BaseTimeEntity {
 
     public void update(Board board){
         this.title = board.getTitle ();
-        this.subTitle = board.getSubTitle ();
         this.content = board.getContent ();
         this.boardType = board.getBoardType ();
     }

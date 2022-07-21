@@ -3,18 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html"/>
-  <link rel="stylesheet" th:href="@{/css/base.css}" />
+  <title>TourList 홈페이지</title>
+
   <!-- 폰트 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
   <!-- 아이콘 -->
   <script src="https://kit.fontawesome.com/ac79bf9ffb.js" crossorigin="anonymous"></script>
-  <title>TourList 홈페이지</title>
+  <link rel="stylesheet" th:href="@{/css/base.css}" />
+  <link rel="stylesheet" th:href="@{/css/tourlist.css}" />
 </head>
 <body>
 <!-- ---------------------------<header>--------------------------------------- -->
   <div th:replace="layout/header::header"></div>
+
+  <div class="visual">
+    <div class="content-box" style="background-color: #337ab7;">
+      <div>
+        <img style="width: 200px; height: 150px; padding: 5px;" th:src="@{/image/Noimg.png}" alt="이미지 없음">
+        <img style="width: 200px; height: 150px; padding: 5px;" th:src="@{/image/Noimg.png}" alt="이미지 없음">
+        <img style="width: 200px; height: 150px; padding: 5px;" th:src="@{/image/Noimg.png}" alt="이미지 없음">
+      </div>
+    </div>
+  </div>
+
+  <div class="container" >
+    <div class="content-box" style="background-color: #666666;">
+      <div style="display: flex;">
+        <div style="width: 374px; height: 600px; margin: 5px; background-color: #d24945;"></div>
+        <div style="width: 374px; height: 600px; margin: 5px; background-color: #d49466;">
+          <div style="width: 360px; height: 280px; margin: 5px; background-color: #d24945;"></div>
+          <div style="width: 360px; height: 280px; margin: 5px; background-color: #d24945;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!-- -------------------------- <footer> -------------------------------------- -->
   <div th:replace="layout/footer::footer"></div>

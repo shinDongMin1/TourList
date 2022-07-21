@@ -1,12 +1,11 @@
 .container {
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    height: 90vh; }
+    height: 95vh; min-width: 828px; }
 
 .formLogin{
     display: flex; flex-direction: column;
-    align-items:center; font-size: var(--font-medium);
-
+    align-items: center;
+    font-size: var(--font-medium);
+    padding: 40px 30px; width: 768px;
 }
 .formLogin-logo {
     display: flex; flex-direction: row;
@@ -22,6 +21,7 @@
     display: flex; flex-direction: column;
 }
 .formLogin-Login input{
+    width: 200px;
     padding: 10px 0;
 }
 .formLogin-Login #userid{
@@ -32,7 +32,7 @@
 }
 
 .formLogin-btnDATA {
-    width: 100%;
+    width: 200px;
 }
 .formLogin-btnDATA button{
     width: 100%; border-radius: 4px;

@@ -1,0 +1,7 @@
+.container { justify-content: center; min-width: 828px; }
+
+.attr-box { width: 768px; padding: 40px 30px;}
+.attr-box h1 { font-size: var(--font-large); }
+.attr-box .region_info { background-color: #f1f1f1; border-radius: 4px; padding: 10px; margin: 0 0 10px 0; }
+.attr-box .region_info .region_main { display: flex; flex-direction: column; border-radius: 4px; padding: 10px;}
+.attr-box .region_info .region_main a { padding: 2px; margin: 2px; }

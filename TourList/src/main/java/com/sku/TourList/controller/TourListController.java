@@ -1,8 +1,9 @@
 package com.sku.TourList.controller;
 
-import com.sku.TourList.domain.Board;
-import com.sku.TourList.domain.Member;
+import com.sku.TourList.domain.*;
+import com.sku.TourList.service.ApiService;
 import com.sku.TourList.service.BoardService;
+import com.sku.TourList.service.CommentService;
 import com.sku.TourList.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,47 +15,50 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/tourlist/*")
 @RequiredArgsConstructor
 public class TourListController {
 
-    //private final ApiService apiService;
+    private final ApiService apiService;
+    private final CommentService commentService;
     private final BoardService boardService;
     private final MemberService memberService;
     private String board_message = "";
-    private String DateSearch = "00000000";
+    private String comment_message = "";
 
 
- /*   @GetMapping("statistics")
-    public ModelAndView statistics(HttpSession session, ModelAndView mav) {
+    @GetMapping("region")
+    public ModelAndView region(HttpSession session, ModelAndView mav) {
+        mav.setViewName("tourlist/region"); // 뷰의 이름
+        List<Region> region = new ArrayList<>();
+        mav.addObject("region", region);
 
-        if(session.getAttribute ("date") != null){
-            DateSearch = session.getAttribute ("date").toString ();
-        }
-        mav.setViewName("corona/statistics"); // 뷰의 이름
-        mav.addObject("result",  apiService.CallCoronaApi (DateSearch, DateSearch));
         mav.addObject("login_message", session.getAttribute ("name"));
-        session.setAttribute ("date", null);
-        DateSearch = "00000000";
         return mav;
-    }*/
+    }
 
-    @RequestMapping(value = "date", method = RequestMethod.GET)
-    public ModelAndView putDate(@RequestParam String date, HttpSession session, ModelAndView mav)  {
-        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat ("yyyy-MM-dd");
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat ("yyyyMMdd");
+    @GetMapping({"attractions", "attractions/"})
+    public ModelAndView attractions(@RequestParam(value = "areaCode", defaultValue = "0") String areaCode, @RequestParam(value = "sigunguCode", defaultValue = "0") String sigunguCode, HttpSession session, ModelAndView mav) {
+        mav.setViewName("tourlist/attractions"); // 뷰의 이름
+        List<Tour> result = apiService.CallApi (areaCode, sigunguCode);
 
-        Date day = null;
-        try {
-            day = simpleDateFormat1.parse (date);
-        } catch (ParseException e) {
-            e.printStackTrace ();
-        }
-        session.setAttribute ("date", simpleDateFormat2.format (day));
-        mav.setViewName("redirect:statistics");
+        mav.addObject("result",  result);
+        mav.addObject("login_message", session.getAttribute ("name"));
+        return mav;
+    }
+
+    @GetMapping({"view", "view/"})
+    public ModelAndView viewItem(@RequestParam(value = "contentId", defaultValue = "0") String contentId, HttpSession session, ModelAndView mav) {
+        mav.setViewName("tourlist/view"); // 뷰의 이름
+        Tour result = apiService.CallDetail (contentId);
+
+        mav.addObject ("result", result);
+        mav.addObject("login_message", session.getAttribute ("name"));
         return mav;
     }
 
@@ -75,16 +79,8 @@ public class TourListController {
         return mav;
     }
 
-    @GetMapping({"form", "form/"})
-    public ModelAndView form(@RequestParam(value = "id", defaultValue = "0") Long id, HttpSession session, ModelAndView mav){
-        mav.setViewName("tourlist/form"); // 뷰의 이름
-        mav.addObject ("board", boardService.findBoardById (id));
-        mav.addObject("login_message", session.getAttribute ("name"));
-        return mav;
-    }
-
-    @RequestMapping(value = "post", method = RequestMethod.POST)
-    public ModelAndView postBoard(@ModelAttribute Board board, HttpSession session, ModelAndView mav) {
+    @RequestMapping(value = "saveBoard", method = RequestMethod.POST)
+    public ModelAndView saveBoard(@ModelAttribute Board board, HttpSession session, ModelAndView mav) {
         Member user = memberService.findUser (session);
         if(user != null) {
             board.setUser (user);
@@ -99,8 +95,8 @@ public class TourListController {
         //return new ResponseEntity<> ("{}", HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "put", method = RequestMethod.POST)
-    public ModelAndView putBoard(@ModelAttribute Board board, HttpSession session, ModelAndView mav) {
+    @RequestMapping(value = "updateBoard", method = RequestMethod.POST)
+    public ModelAndView updateBoard(@ModelAttribute Board board, HttpSession session, ModelAndView mav) {
         Member user = memberService.findUser (session);
         Board findBoard = boardService.findBoardById (board.getId ());
 
@@ -131,7 +127,7 @@ public class TourListController {
     //ResponseEntity<?>
     //@PathVariable = board/{id}/name/
     //@RequestParam = board+?id=&name=
-    @RequestMapping(value = "delete", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteBoard", method = RequestMethod.POST)
     public ModelAndView deleteBoard(@ModelAttribute Board board, HttpSession session, ModelAndView mav) {
         Member user = memberService.findUser (session);
         Board findBoard = boardService.findBoardById (board.getId ());
@@ -151,5 +147,96 @@ public class TourListController {
         mav.setViewName("redirect:board");
         return mav;
         //return new ResponseEntity<> ("{}", HttpStatus.OK);
+    }
+
+    @GetMapping({"form", "form/"})
+    public ModelAndView form(@RequestParam(value = "id", defaultValue = "0") Long id, HttpSession session, ModelAndView mav){
+        mav.setViewName("tourlist/form"); // 뷰의 이름
+        mav.addObject ("board", boardService.findBoardById (id));
+        mav.addObject("login_message", session.getAttribute ("name"));
+        return mav;
+    }
+
+    @GetMapping({"read", "read/"})
+    public ModelAndView read(@RequestParam(value = "id", defaultValue = "0") Long id, HttpSession session, ModelAndView mav){
+        mav.setViewName("tourlist/read"); // 뷰의 이름
+        ArrayList<Comment> commentList = new ArrayList<> ();
+        commentList = commentService.findCommentList (id);
+        mav.addObject ("board", boardService.findBoardById (id));
+        mav.addObject ("commentList", commentList);
+        mav.addObject("login_message", session.getAttribute ("name"));
+        mav.addObject("userid", session.getAttribute ("userid"));
+        mav.addObject("comment_message", comment_message);
+        comment_message = "";
+        return mav;
+    }
+
+    @RequestMapping(value = "saveComment", method = RequestMethod.POST)
+    public ModelAndView saveComment(@ModelAttribute Comment comment, @RequestParam(value = "id2", defaultValue = "0") Long id, HttpSession session, ModelAndView mav) {
+        Member user = memberService.findUser (session);
+        Board board = boardService.findBoardById (id);
+        if(user != null) {
+            comment.setUser (user);
+            comment.setBoard (board);
+            commentService.save (comment);
+            comment_message = "save";
+        }
+        else {
+            comment_message = "fail";
+        }
+        mav.setViewName("redirect:read?id=" + id); // 뷰의 이름
+        return mav;
+    }
+
+    @GetMapping({"modify", "modify/"})
+    public ModelAndView modify(@RequestParam Long boardID, @RequestParam Long commentID, HttpSession session, ModelAndView mav) {
+        Comment findComment = commentService.findCommentById (commentID);
+
+        mav.addObject("boardID", boardID);
+        mav.addObject("comment", findComment);
+        mav.addObject("login_message", session.getAttribute ("name"));
+        mav.addObject("userid", session.getAttribute ("userid"));
+
+        mav.setViewName("tourlist/modify"); // 뷰의 이름
+        return mav;
+    }
+
+    @RequestMapping("updateComment")
+    public ModelAndView updateComment(@RequestParam Long boardID, @RequestParam Long commentID, @ModelAttribute Comment comment, HttpSession session, ModelAndView mav) {
+        Member user = memberService.findUser (session);
+        Comment findComment = commentService.findCommentById (commentID);
+
+        if(user != null) {
+            if(findComment.getUser () == user) {
+                Comment persistComment = commentService.findCommentById (commentID);
+                persistComment.update (comment);
+                commentService.save (persistComment); // save = insert + update
+                comment_message = "update";
+            }
+            else {
+                comment_message = "fail";
+            }
+        }
+        mav.setViewName("redirect:read?id=" + boardID); // 뷰의 이름
+        return mav;
+        //return new ResponseEntity<> ("{}", HttpStatus.OK);
+    }
+
+    @GetMapping("deleteComment")
+    public ModelAndView deleteComment(@RequestParam Long boardID, @RequestParam Long commentID, HttpSession session, ModelAndView mav) {
+        Member user = memberService.findUser (session);
+        Comment findComment = commentService.findCommentById (commentID);
+
+        if(user != null) {
+            if(findComment.getUser () == user) {
+                commentService.deleteById (commentID);
+                comment_message = "delete";
+            }
+            else {
+                comment_message = "fail";
+            }
+        }
+        mav.setViewName("redirect:read?id=" + boardID); // 뷰의 이름
+        return mav;
     }
 }

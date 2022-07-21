@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TourList 홈페이지</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/login.css}" />
+
     <!-- 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap" rel="stylesheet">
     <!-- 아이콘 -->
     <script src="https://kit.fontawesome.com/ac79bf9ffb.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/base1.css}" />
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
     <script  type="text/javascript">
         function Login()
         {
@@ -54,11 +57,13 @@
     <!--<span th:text="'로그아웃되었습니다.'" th:if="${message} eq 'logout'" style="color:red;"></span>-->
 
     <div class="container">
+        <div class="content-box">
             <form name="formLogin" class="formLogin" method="post" >
                 <div class="formLogin-logo">
                     <i class="fas fa-bars"></i>
                     <a href="/tourlist">TourList</a>
                 </div>
+
                 <div class="formLogin-Login">
                     <input type="text" id="userid" name="userid" placeholder="아이디" title="아이디" maxlength="25">
                     <input type="password" id="password" name="password" placeholder="비밀번호" title="비밀번호" maxlength="25">
@@ -70,6 +75,7 @@
                     <button type="button" id="btnJoin" onclick=Join()>회원가입</button>
                 </div>
             </form>
+        </div>
     </div>
 
     <div th:replace="layout/footer::footer"></div>

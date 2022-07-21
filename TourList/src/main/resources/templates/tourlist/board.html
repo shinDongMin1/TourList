@@ -2,9 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:padding="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
-    <title>SKU 코로나 Map</title>
-    <link rel="stylesheet" th:href="@{/css/base.css}" />
-    <link rel="stylesheet" th:href="@{/css/board.css}" />
+    <title>TourList 홈페이지</title>
 
     <!-- 폰트 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +11,16 @@
 
     <!-- 아이콘 -->
     <script src="https://kit.fontawesome.com/ac79bf9ffb.js" crossorigin="anonymous"></script>
-    <script th:src="@{/js/corona.js}" type="text/javascript" defer></script>
+
+    <!-- 페이징 -->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/board.css}" />
 </head>
 <body>
     <th:block th:if="${board_message} eq 'fail'" >
@@ -45,61 +52,84 @@
     <div th:replace="layout/header::header"></div>
 
     <div class="container">
-        <div class="page-header">
-            <div>
-                <h1>게시글 목록</h1>
-            </div>
-            <div class="pull-right" style="width:100px;margin:10px 0;">
-                <a href="/tourlist/form" class="btn btn-primary btn-block">등록</a>
-            </div>
-        </div>
+        <div class="content-box">
+            <h1 class="hidden">게시글 목록</h1>
 
-        <div class="mainHide">
-            <table class="table" >
-                <thead class="table_head">
-                    <tr>
-                        <!--<th class="col-md-1">#</th>-->
-                        <th class="col-md-1">서비스 분류</th>
-                        <th class="col-md-2">제목</th>
-                        <th class="col-md-3">작성자</th>
-                        <th class="col-md-4">작성 날짜</th>
-                        <th class="col-md-5">수정 날짜</th>
-                    </tr>
-                </thead>
-                <tbody class="table_body">
-                    <tr th:each="board : ${boardList}" >
-                        <!--<td th:text="${board.id}"></td>-->
-                        <td th:text="${board.boardType.value}"></td>
-                        <td><a th:href="'/tourlist/form?id='+${board.id}" th:text="${board.title}"></a></td>
-                        <td th:text="${board.user.userid}"></td>
-                        <td th:text="${board.createdDate}? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')}: ${board.createdDate}"></td>
-                        <td th:text="${board.modifiedDate}? ${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}: ${board.modifiedDate}"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="mainHide">
+                <table class="table" >
+                    <thead class="table_head">
+                        <tr>
+                            <!--<th class="col-md-1">#</th>-->
+                            <th class="col-md-1">분류</th>
+                            <th class="col-md-2">제목</th>
+                            <th class="col-md-3">작성자</th>
+                            <th class="col-md-4">작성 날짜</th>
+                            <!--<th class="col-md-5">수정 날짜 readform?id='+${board.id}</th>-->
+                        </tr>
+                    </thead>
+                    <tbody class="table_body">
+                        <tr th:each="board : ${boardList}" >
+                            <!--<td th:text="${board.id}"></td>-->
+                            <td th:text="${board.boardType.value}"></td>
+                            <td><a th:href="'/tourlist/read?id='+${board.id}" th:text="${board.title}" style="color: #337ab7"></a></td>
+                            <td th:text="${board.user.userid}"></td>
+                            <!--<td th:text="${board.createdDate}? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')}: ${board.createdDate}"></td>-->
+                            <td th:text="${board.modifiedDate}? ${#temporals.format(board.modifiedDate,'yyyy-MM-dd HH:mm')}: ${board.modifiedDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+    <!--        <ul class="pagination">
+                &lt;!&ndash; li태그의 클래스에 disabled를 넣으면 마우스를 위에 올렸을 때 클릭 금지 마크가 나오고 클릭도 되지 않는다.&ndash;&gt;
+                &lt;!&ndash; disabled의 의미는 앞의 페이지가 존재하지 않다는 뜻이다. &ndash;&gt;
+                <li class="disabled">
+                    <a href="#">
+                        <span>«</span>
+                    </a>
+                </li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#">
+                        <span>»</span>
+                    </a>
+                </li>
+            </ul>-->
+
+            <div class="bottom-bar">
+                <!-- 페이지 번호 -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination"
+                        th:with="startNumber=(${T(java.lang.Math).floor(boardList.number/10)}*10+1), endNumber=((${boardList.totalPages} > ${startNumber}+9) ? ${startNumber}+9 : ${boardList.totalPages})">
+                        <th:block  th:if="${endNumber}">
+                            <li>
+                                <a aria-label="Previous" href="/tourlist/board?page=1"><span>&laquo;</span></a>
+                            </li>
+                            <li th:style="${boardList.first} ? 'display:none'">
+                                <a th:href="@{/tourlist/board(page=${boardList.number})}"><span>&lsaquo;</span></a>
+                            </li>
+                            <li class="active" th:each="page : ${#numbers.sequence(startNumber, endNumber)}" th:class="(${page} == ${boardList.number}+1) ? 'active': 'none'">
+                                <a href="#" th:href="@{/tourlist/board(page=${page})}" th:text="${page}"><span class="sr-only"></span></a>
+                            </li>
+                            <li th:style="${boardList.last} ? 'display:none'">
+                                <a th:href="@{/tourlist/board(page=${boardList.number}+2)}"><span>&rsaquo;</span></a>
+                            </li>
+                            <li>
+                                <a  aria-label="Next" th:href="@{/tourlist/board(page=${boardList.totalPages})}"><span>&raquo;</span></a>
+                            </li>
+                        </th:block >
+                    </ul>
+                </nav>
+
+                <div class="pull-right" th:if="${login_message} ne null">
+                    <a href="/tourlist/form" class="btn btn-primary btn-block">등록</a>
+                </div>
+            </div>
         </div>
-        <br/>
-        <!-- 페이지 번호 -->
-        <!--<nav aria-label="Page navigation">
-            <ul class="pagination"
-                th:with="startNumber=(${T(Math).floor(boardList.number/10)}*10+1), endNumber=((${boardList.totalPages} > ${startNumber}+9) ? ${startNumber}+9 : ${boardList.totalPages})">
-                <li>
-                    <a aria-label="Previous" href="/tourlist1/board?page=1">&laquo;</a>
-                </li>
-                <li th:style="${boardList.first} ? 'display:none'">
-                    <a th:href="@{/corona/board(page=${boardList.number})}">&lsaquo; </a>
-                </li>
-                <li th:each="page : ${#numbers.sequence(startNumber, endNumber)}" th:class="(${page} == ${boardList.number}+1) ? 'active': 'none'">
-                    <a th:href="@{/corona/board(page=${page})}" th:text="${page}"><span class="sr-only"></span></a>
-                </li>
-                <li th:style="${boardList.last} ? 'display:none'">
-                    <a th:href="@{/corona/board(page=${boardList.number}+2)}">&rsaquo; </a>
-                </li>
-                <li>
-                    <a arta-label="Next" th:href="@{/corona/board(page=${boardList.totalPages})}">&raquo;</a>
-                </li>
-            </ul>
-        </nav>-->
     </div>
 
     <div th:replace="layout/footer::footer"></div>

@@ -1,11 +1,12 @@
+
+
 .container {
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    height: 90vh; }
+    height: 95vh; min-width: 828px; }
 
 .formJoin{
     display: flex; flex-direction: column;
     align-items:center; font-size: var(--font-medium);
+    padding: 20px 30px; width: 768px;
 }
 .formJoin-logo {
     display: flex; flex-direction: row;
@@ -22,6 +23,7 @@
     display: flex; flex-direction: column;
 }
 .formJoin-Join input{
+    width: 200px;
     padding: 10px 0;
 }
 .formJoin-Join #userid{
@@ -38,7 +40,7 @@
 }
 
 .formJoin-btnDATA {
-    width: 100%;
+    width: 200px;
 }
 .formJoin-btnDATA button{
     width: 100%; border-radius: 4px;
